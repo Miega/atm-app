@@ -1,0 +1,9 @@
+<h1>ATM Overview</h1>
+<h3>ATM Stock</h3>
+<div class="overview-item" *ngFor="let money of atmMoney">
+    <span>Number of ${{ money.denomination }} bills: {{ money.billAmount }}</span>
+</div>
+<h3>Transaction History</h3>
+<div class="overview-item" *ngFor="let transaction of transactions">
+    <span><strong>{{ transaction.timestamp }}:</strong> {{ transaction.alertMessage }}</span>
+</div>
