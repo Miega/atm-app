@@ -53,14 +53,27 @@ export class MoneyService {
     }
     // See if we were not able to make the change due to the ATM not having enough cash on hand.
     if (cash > 0) {
-      // If the ATM runs out of cash, trigger a displayMessage.
+      // If the ATM runs out of cash or doesn't have the correct number of bills, trigger an error message.
       // Set the boolean in the withdrawArray to false.
-      this.alertService.error('Insufficent Funds.', this.options);
+      this.alertService.error('Insufficent funds or bills available. Please restock.', this.options);
       withdrawArray[1] = false;
     }
     // Add the piles of bills to the withdrawArray.
     withdrawArray[0] = userPiles;
     return withdrawArray;
+  }
+  getAtmTotal(): number {
+      // Get the number of bills from the ATM stock, then
+      // multiply by each demonination to get the total available.
+      let atmTotal;
+      const billValues = Object.assign([], this.atmStock);
+      let step = 0;
+      while (step < billValues.length) {
+        billValues[step] *= this.denominations[step];
+        step++;
+      }
+      atmTotal = billValues.reduce((a, b) => a + b, 0);
+      return atmTotal;
   }
 
   updateStock(add, billsRequested, cashAmount): void {
@@ -73,7 +86,8 @@ export class MoneyService {
         this.atmStock[step] -= billsRequested[step];
         step++;
       }
-      this.alertService.success('Dispensed $' + cashAmount + ' to user.', this.options);
+      const totalStock = this.getAtmTotal();
+      this.alertService.success('Dispensed $' + cashAmount + ' to user. $' + totalStock + ' remaining in stock.', this.options);
     }
     else {
       // Add the values to atmStock.
@@ -81,7 +95,8 @@ export class MoneyService {
         this.atmStock[step] += billsRequested[step];
         step++;
       }
-      this.alertService.success('Successfully added bills to ATM stock.', this.options);
+      const totalStock = this.getAtmTotal();
+      this.alertService.success('Successfully added bills to ATM stock. $' + totalStock + ' in stock.', this.options);
     }
     return;
   }
