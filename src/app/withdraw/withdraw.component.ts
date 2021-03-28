@@ -30,12 +30,12 @@ export class WithdrawComponent implements OnInit {
     const cash = this.withdrawalForm.value.cashAmount;
     if (cash > 0){
       // Submit the values entered and take bills from the ATM stock.
-      console.log('Withdrawing $' + cash);
+      console.log(`Withdrawing $${cash}`);
       this.moneyService.withdrawCash(cash);
     }
     else {
       // Trigger an error message if the value entered was negative.
-      this.alertService.error('Invalid withdrawal value of ' + cash + ' entered.', this.options);
+      this.alertService.error(`Invalid withdrawal value of ${cash} entered.`, this.options);
     }
   }
 

@@ -1,0 +1,12 @@
+<div class="container">
+    <form (ngSubmit)="onSubmit()" [formGroup]="commandForm">
+        <h3>ATM Console</h3>
+        <div class="form-group">
+            <label for="commandText">Enter command:</label>
+            <input id="commandText" class="form-control" formControlName="commandText" type="text" required>
+        </div>
+        <div>
+            <button class="btn btn-success" type="submit" [disabled]="!commandForm.valid">Submit</button>
+        </div>
+    </form>
+</div>

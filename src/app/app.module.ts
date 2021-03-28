@@ -9,19 +9,17 @@ import { AppComponent } from './app.component';
 import { WithdrawComponent } from './withdraw/withdraw.component';
 import { RestockComponent } from './restock/restock.component';
 import { OverviewComponent } from './overview/overview.component';
+import { InputComponent } from './input/input.component';
+import { LoginComponent } from './login/login.component';
 
 const appRoutes: Routes = [
   {
     path: '',
-    component: WithdrawComponent
+    component: LoginComponent
   },
   {
-    path: 'restock',
-    component: RestockComponent
-  },
-  {
-    path: 'overview',
-    component: OverviewComponent
+  path: 'console',
+    component: InputComponent
   }
 ];
 
@@ -30,7 +28,9 @@ const appRoutes: Routes = [
     AppComponent,
     WithdrawComponent,
     RestockComponent,
-    OverviewComponent
+    OverviewComponent,
+    InputComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

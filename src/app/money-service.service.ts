@@ -13,6 +13,8 @@ export class MoneyService {
   atmStock = [10, 10, 10, 10, 10, 10];
   // Array containing value of bill denominations.
   denominations = [100, 50, 20, 10, 5, 1];
+  // The default value of the ATM stock. Used when resetting the ATM values.
+  defaultValue = 10;
 
   options = {
     autoClose: false,
@@ -27,7 +29,23 @@ export class MoneyService {
     // If the array returned by getBills() evaluates to true, update the atmStock.
     if (billsRequested[1]){
       this.updateStock(false, billsRequested[0], cash);
+      this.inquireStock();
     }
+  }
+
+  inquireStock(): void {
+    // Get a readout on all of the bills in the ATM stock.
+    let atmString = `Machine Balance: \n`;
+    let step = 0;
+    while (step < this.atmStock.length){
+      atmString += `$${this.denominations[step]}: ${this.atmStock[step]} \n`;
+      step++;
+    }
+    this.alertService.success(atmString);
+  }
+
+  inquireDenominations(denomArray): void {
+    console.log(denomArray);
   }
 
   getBills(cash): any {
@@ -76,6 +94,18 @@ export class MoneyService {
       return atmTotal;
   }
 
+  resetStock(): void{
+
+    let step = 0;
+    while (step < this.atmStock.length){
+      this.atmStock[step] = this.defaultValue;
+      step++;
+    }
+    this.alertService.success('ATM stock has been reset to default values.', this.options);
+    // Run the inquiry command to get the stock of bills.
+    this.inquireStock();
+  }
+
   updateStock(add, billsRequested, cashAmount): void {
     console.log(billsRequested);
     // Update the ATM with new values.
@@ -87,7 +117,7 @@ export class MoneyService {
         step++;
       }
       const totalStock = this.getAtmTotal();
-      this.alertService.success('Dispensed $' + cashAmount + ' to user. $' + totalStock + ' remaining in stock.', this.options);
+      this.alertService.success(`Dispensed ${cashAmount} to user. $${totalStock} remaining in stock.`, this.options);
     }
     else {
       // Add the values to atmStock.
@@ -96,7 +126,7 @@ export class MoneyService {
         step++;
       }
       const totalStock = this.getAtmTotal();
-      this.alertService.success('Successfully added bills to ATM stock. $' + totalStock + ' in stock.', this.options);
+      this.alertService.success(`Successfully added bills to ATM stock. $${totalStock} in stock.`, this.options);
     }
     return;
   }

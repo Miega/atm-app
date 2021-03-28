@@ -42,7 +42,7 @@ export class RestockComponent implements OnInit {
     let step = 0;
     while (step < restockArray.length){
       if (restockArray[step] < 0){
-        this.alertService.error('Invalid restock value of ' + restockArray[step] + ' entered.', this.options);
+        this.alertService.error(`Invalid restock value of ${restockArray[step]} entered.`, this.options);
         return;
       }
       step++;
