@@ -6,9 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertModule } from './_alert';
 
 import { AppComponent } from './app.component';
-import { WithdrawComponent } from './withdraw/withdraw.component';
-import { RestockComponent } from './restock/restock.component';
-import { OverviewComponent } from './overview/overview.component';
 import { InputComponent } from './input/input.component';
 import { LoginComponent } from './login/login.component';
 
@@ -26,9 +23,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    WithdrawComponent,
-    RestockComponent,
-    OverviewComponent,
     InputComponent,
     LoginComponent
   ],

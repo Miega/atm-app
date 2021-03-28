@@ -71,6 +71,11 @@ export class InputComponent implements OnInit {
         let inputString = command.substr(2);
         inputString = inputString.replace(/\$/g, '');
         const denomArray = inputString.split(' ');
+        let step = 0;
+        while (step < denomArray.length){
+          denomArray[step] = parseInt(denomArray[step], 10);
+          step++;
+        }
         this.moneyService.inquireDenominations(denomArray);
         break;
       case 'Q':

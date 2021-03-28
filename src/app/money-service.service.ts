@@ -17,7 +17,7 @@ export class MoneyService {
   defaultValue = 10;
 
   options = {
-    autoClose: false,
+    autoClose: true,
     keepAfterRouteChange: false
   };
 
@@ -28,24 +28,52 @@ export class MoneyService {
     const billsRequested = this.getBills(cash);
     // If the array returned by getBills() evaluates to true, update the atmStock.
     if (billsRequested[1]){
-      this.updateStock(false, billsRequested[0], cash);
+      this.updateStock(billsRequested[0], cash);
       this.inquireStock();
     }
   }
 
   inquireStock(): void {
     // Get a readout on all of the bills in the ATM stock.
-    let atmString = `Machine Balance: \n`;
+    let atmString = `<div>Machine Balance: </div>`;
     let step = 0;
     while (step < this.atmStock.length){
-      atmString += `$${this.denominations[step]}: ${this.atmStock[step]} \n`;
+      atmString += `<div>$${this.denominations[step]} - ${this.atmStock[step]} </div>`;
       step++;
     }
-    this.alertService.success(atmString);
+    this.alertService.success(atmString, this.options);
   }
 
   inquireDenominations(denomArray): void {
     console.log(denomArray);
+    if (denomArray.length > 0){
+      // Match the values in the denomArray to the list of denominations
+      // and get their matching index number.
+      const indexArray = [];
+      const billArray = [];
+      let inquiryString = `<div>Machine Balance: </div>`;
+      let step = 0;
+      while (step < denomArray.length){
+        indexArray.push(this.denominations.indexOf(denomArray[step]));
+        step++;
+      }
+      // Then, find the number of matching bills in the atmStock.
+      step = 0;
+      while (step < indexArray.length){
+        billArray.push(this.atmStock[indexArray[step]]);
+        step++;
+      }
+      step = 0;
+      while (step < denomArray.length){
+        inquiryString += `<div>$${denomArray[step]} - ${billArray[step]} </div>`;
+        step++;
+      }
+      // Finally, send the string over to the AlertService.
+      this.alertService.success(inquiryString, this.options);
+    }
+    else {
+      this.alertService.error('Invalid Command', this.options);
+    }
   }
 
   getBills(cash): any {
@@ -106,28 +134,17 @@ export class MoneyService {
     this.inquireStock();
   }
 
-  updateStock(add, billsRequested, cashAmount): void {
+  updateStock(billsRequested, cashAmount): void {
     console.log(billsRequested);
     // Update the ATM with new values.
     let step = 0;
-    if (!add){
-      // Subtract the values from atmStock.
-      while (step < this.atmStock.length) {
+    // Subtract the values from atmStock.
+    while (step < this.atmStock.length) {
         this.atmStock[step] -= billsRequested[step];
         step++;
-      }
-      const totalStock = this.getAtmTotal();
-      this.alertService.success(`Dispensed ${cashAmount} to user. $${totalStock} remaining in stock.`, this.options);
     }
-    else {
-      // Add the values to atmStock.
-      while (step < this.atmStock.length) {
-        this.atmStock[step] += billsRequested[step];
-        step++;
-      }
-      const totalStock = this.getAtmTotal();
-      this.alertService.success(`Successfully added bills to ATM stock. $${totalStock} in stock.`, this.options);
-    }
+    const totalStock = this.getAtmTotal();
+    this.alertService.success(`Dispensed ${cashAmount} to user. $${totalStock} remaining in stock.`, this.options);
     return;
   }
 }
