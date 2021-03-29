@@ -107,7 +107,7 @@ export class MoneyService {
     if (cash > 0) {
       // If the ATM runs out of cash or doesn't have the correct number of bills, trigger an error message.
       // Set the boolean in the withdrawArray to false.
-      this.alertService.error('Insufficent funds or bills available. Please restock.', this.options);
+      this.alertService.error('Insufficent funds or bills available.', this.options);
       withdrawArray[1] = false;
     }
     // Add the piles of bills to the withdrawArray.
