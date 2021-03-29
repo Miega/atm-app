@@ -14,8 +14,8 @@ After running `npm install`, run `ng serve` or `npm start` for a dev server. Nav
 
 R - Restocks ATM to default values of ten of each available denomination.
 
-W $<amount> - Withdraws money from the ATM using the least amount of bills, then displays the remaining bills in stock.
+W $amount - Withdraws money from the ATM using the least amount of bills, then displays the remaining bills in stock.
 
-I $<denomination> - Returns the amount of specified bills in the ATM. Can list more than one denomination.
+I $denomination - Returns the amount of specified bills in the ATM. Can list more than one denomination.
 
 Q - Quits the application and returns the user to the "Login" page.
