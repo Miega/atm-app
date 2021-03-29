@@ -22,7 +22,7 @@
   }
 
   .toolbar {
-    background-color: #001eff;
+    background-color: #dc2b33;
     color: white;
   }
 
@@ -30,7 +30,7 @@
     margin: 0 16px;
   }
 
-  .links a{
+  .links a {
     margin: 0 16px;
   }
 
@@ -39,9 +39,9 @@
     margin: 40px auto 32px;
     background-color: ivory;
     padding: 20px 20px;
-    width: 500px;
+    width: 400px;
     border-radius: 8px;
-    border: 4px solid lightslategray;
+    border: 4px solid gray;
     flex-direction: column;
     align-items: center;
     box-shadow: 6px 5px 15px gray;

@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class InputComponent implements OnInit {
 
   options = {
-    autoClose: false,
+    autoClose: true,
     keepAfterRouteChange: false
   };
 
@@ -48,7 +48,7 @@ export class InputComponent implements OnInit {
         if (dollarMarker > 0){
           const bills = command.substr(dollarMarker);
           const regex = /^[A-Za-z]+$/;
-          if (bills.match(regex)){
+          if (bills.match(regex) || isNaN(bills)){
             this.alertService.error('Invalid command.', this.options);
           }
           else {
@@ -69,14 +69,31 @@ export class InputComponent implements OnInit {
         // Then call inquireDenominations from the MoneyService.
         console.log('Inquiry command.');
         let inputString = command.substr(2);
-        inputString = inputString.replace(/\$/g, '');
-        const denomArray = inputString.split(' ');
-        let step = 0;
-        while (step < denomArray.length){
-          denomArray[step] = parseInt(denomArray[step], 10);
-          step++;
+        const dollarSignLocation = command.indexOf('$');
+        if (dollarSignLocation >= 0){
+          inputString = inputString.replace(/\$/g, '');
+          if (inputString !== '') {
+            const denomArray = inputString.split(' ');
+            let step = 0;
+            while (step < denomArray.length) {
+              denomArray[step] = parseInt(denomArray[step], 10);
+              if (isNaN(denomArray[step])){
+                this.alertService.error('Invalid command.', this.options);
+                return;
+              }
+              step++;
+            }
+            if (denomArray.length > 0) {
+              this.moneyService.inquireDenominations(denomArray);
+            }
+          }
+          else {
+            this.alertService.error('Invalid command.', this.options);
+          }
         }
-        this.moneyService.inquireDenominations(denomArray);
+        else {
+          this.alertService.error('Invalid command.', this.options);
+        }
         break;
       case 'Q':
         // Quit the application and return the user to the Login page.
@@ -84,6 +101,7 @@ export class InputComponent implements OnInit {
         this.router.navigate([''], { relativeTo: this.route });
         break;
       default:
+        this.alertService.error('Invalid command.', this.options);
         break;
     }
 
