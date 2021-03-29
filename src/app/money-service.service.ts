@@ -29,6 +29,7 @@ export class MoneyService {
     // If the array returned by getBills() evaluates to true, update the atmStock.
     if (billsRequested[1]){
       this.updateStock(billsRequested[0], cash);
+      this.inquireStock();
     }
   }
 
@@ -135,6 +136,7 @@ export class MoneyService {
       step++;
     }
     this.alertService.success('ATM stock has been reset to default values.', this.options);
+    this.inquireStock();
   }
 
   updateStock(billsRequested, cashAmount): void {
